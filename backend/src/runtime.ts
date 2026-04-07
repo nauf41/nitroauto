@@ -165,8 +165,7 @@ export function executeAction(code: ActionStructure, context: RuntimeContext) {
       const calendar = CalendarApp.getCalendarById(code[1]);
       if (!calendar) break;
       const events = calendar.getEventsForDay(new Date(Date.now() + code[3] * 24 * 60 * 60 * 1000));
-      context.actionVariablesForFollowing.push([code[4], [["array<schedule>", events]]]);
-      context.actionVariablesForFollowing.push([code[4], [["arraylength<schedule>", events]]]);
+      context.actionVariablesForFollowing.push([code[4], [["array<schedule>", events], ["arraylength<schedule>", events]]]);
       break;
     }
   }
@@ -206,6 +205,8 @@ export function evaluateCondition(code: ConditionStructure, context: RuntimeCont
         }
       })();
 
+      Logger.log(`Comparing ${left} ${code[1]} ${right}`);
+
       switch (code[1]) {
         case "==": {
           if (left === null) {
@@ -229,6 +230,8 @@ export function evaluateCondition(code: ConditionStructure, context: RuntimeCont
               return true;
             } else if (left[0] === "arraylength<schedule>" && right[0] === "arraylength<schedule>") {
               return left[1].length === right[1].length;
+            } else if (left[0] === "arraylength<schedule>" && right[0] === "number") {
+              return left[1].length === right[1];
             } else {
               return false;
             }
@@ -256,6 +259,8 @@ export function evaluateCondition(code: ConditionStructure, context: RuntimeCont
               return true;
             } else if (left[0] === "arraylength<schedule>" && right[0] === "arraylength<schedule>") {
               return left[1].length === right[1].length;
+            } else if (left[0] === "arraylength<schedule>" && right[0] === "number") {
+              return left[1].length === right[1];
             } else {
               return false;
             }
@@ -269,6 +274,9 @@ export function evaluateCondition(code: ConditionStructure, context: RuntimeCont
           if (left[0] === "arraylength<schedule>" && right[0] === "arraylength<schedule>") {
             return left[1].length > right[1].length;
           }
+          if (left[0] === "arraylength<schedule>" && right[0] === "number") {
+            return left[1].length > right[1];
+          }
 
           return false;
         }
@@ -279,6 +287,9 @@ export function evaluateCondition(code: ConditionStructure, context: RuntimeCont
           }
           if (left[0] === "arraylength<schedule>" && right[0] === "arraylength<schedule>") {
             return left[1].length < right[1].length;
+          }
+          if (left[0] === "arraylength<schedule>" && right[0] === "number") {
+            return left[1].length < right[1];
           }
 
           return false;
@@ -291,6 +302,9 @@ export function evaluateCondition(code: ConditionStructure, context: RuntimeCont
           if (left[0] === "arraylength<schedule>" && right[0] === "arraylength<schedule>") {
             return left[1].length >= right[1].length;
           }
+          if (left[0] === "arraylength<schedule>" && right[0] === "number") {
+            return left[1].length >= right[1];
+          }
 
           return false;
         }
@@ -301,6 +315,9 @@ export function evaluateCondition(code: ConditionStructure, context: RuntimeCont
           }
           if (left[0] === "arraylength<schedule>" && right[0] === "arraylength<schedule>") {
             return left[1].length <= right[1].length;
+          }
+          if (left[0] === "arraylength<schedule>" && right[0] === "number") {
+            return left[1].length <= right[1];
           }
 
           return false;

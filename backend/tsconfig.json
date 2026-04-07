@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+
+    "rootDir": "./src",
+    "outDir": "./target",
+
+    "strict": true,
+    "types": ["google-apps-script"],
+
+    "skipLibCheck": true
+  },
+  "include": ["src"]
+}

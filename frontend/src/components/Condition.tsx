@@ -39,7 +39,7 @@ export function Condition(props: {condition: TCondition, setCondition: (arg: TCo
             props.setCondition({...props.condition, right: {type: "constant", value: ""}});
           }
           break;
-        case "number":
+        case "number": case "arraylength<schedule>":
           if (typeof props.condition.right.value !== "number") {
             props.setCondition({...props.condition, right: {type: "constant", value: 0}});
           }

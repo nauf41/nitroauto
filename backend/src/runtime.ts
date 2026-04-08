@@ -205,9 +205,9 @@ export function evaluateCondition(code: ConditionStructure, context: RuntimeCont
         }
       })();
 
-      Logger.log(`Comparing ${left} ${code[1]} ${right}`);
+      Logger.log(`Comparing ${JSON.stringify([left, code[1], right])}`);
 
-      switch (code[1]) {
+      const res = (() => {switch (code[1]) {
         case "==": {
           if (left === null) {
             return right === null;
@@ -323,6 +323,10 @@ export function evaluateCondition(code: ConditionStructure, context: RuntimeCont
           return false;
         }
       }
+      })();
+
+      Logger.log(`Condition result: ${res}`);
+      return res;
     }
   }
 }

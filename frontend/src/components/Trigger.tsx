@@ -11,7 +11,7 @@ export function Trigger(props: {trigger: TTrigger | null, setTrigger: (arg: TTri
   const lang = languageSetStore().getLanguageObject();
 
   return (
-    <div>
+    <div className="trigger-row">
       <select value={props.trigger?.type ?? "unselected"} onChange={onTypeChange}>
         <option value="unselected" disabled>{lang.triggerSelector.unselected}</option>
         <option value="timed">{lang.triggerSelector.timed}</option>
@@ -121,7 +121,7 @@ export function TimedTrigger(props: {trigger: TTrigger, setTrigger: (arg: TTrigg
   }
 
   return (
-    <>
+    <div className="trigger-row">
       <select value={props.trigger.time.type} onChange={onTimeTypeChange}>
         <option value="once">{lang.triggerSelector.once}</option>
         <option value="daily">{lang.triggerSelector.daily}</option>
@@ -131,15 +131,17 @@ export function TimedTrigger(props: {trigger: TTrigger, setTrigger: (arg: TTrigg
         <input type="datetime-local" defaultValue={getLocaleDateTimeString(props.trigger.time.time)} onBlur={onOnceTimeChange} />
       )}
       {props.trigger.time.type === "weekly" && (
-        [lang.triggerSelector.sunday, lang.triggerSelector.monday, lang.triggerSelector.tuesday, lang.triggerSelector.wednesday, lang.triggerSelector.thursday, lang.triggerSelector.friday, lang.triggerSelector.saturday].map((day, index) => (
-          <span key={index}>
-            <input key={index} type="checkbox" checked={dayOfWeek(index)} onChange={onDayOfWeekChange(index)} /> {day}
-          </span>
-        ))
+        <div className="trigger-weekdays">
+          {[lang.triggerSelector.sunday, lang.triggerSelector.monday, lang.triggerSelector.tuesday, lang.triggerSelector.wednesday, lang.triggerSelector.thursday, lang.triggerSelector.friday, lang.triggerSelector.saturday].map((day, index) => (
+            <label key={index} className="trigger-weekday-label">
+              <input type="checkbox" checked={dayOfWeek(index)} onChange={onDayOfWeekChange(index)} /> {day}
+            </label>
+          ))}
+        </div>
       )}
       {(props.trigger.time.type === "daily" || props.trigger.time.type === "weekly") && (
         <input type="time" value={`${props.trigger.time.time.getHours().toString().padStart(2, "0")}:${props.trigger.time.time.getMinutes().toString().padStart(2, "0")}`} onChange={onRepeatTimeChange} />
       )}
-    </>
+    </div>
   )
 }

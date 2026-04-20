@@ -18,10 +18,10 @@ export function StringBuilder(props: {value: StringBuilder, setValue: (arg: Stri
   }
 
   return (
-    <div>
-      <button onClick={insertPart(0)}>{lang.stringBuilder.insert_head}</button><br />
+    <div className="string-builder">
+      <button className="btn btn--sm" onClick={insertPart(0)}>{lang.stringBuilder.insert_head}</button>
       {props.value.parts.map((part, index) => (
-        <div key={index}>
+        <div key={index} className="string-part">
           <StringPart args={props.args} part={part} setPart={(newPart) => {
             const ar = [...props.value.parts];
             ar[index] = newPart;
@@ -36,8 +36,8 @@ export function StringBuilder(props: {value: StringBuilder, setValue: (arg: Stri
               ...props.value,
               parts: ar,
             });
-          }} /><br />
-          <button onClick={insertPart(index+1)}>{lang.stringBuilder.insert_medium}</button>
+          }} />
+          <button className="btn btn--sm" onClick={insertPart(index+1)}>{lang.stringBuilder.insert_medium}</button>
         </div>
       ))}
     </div>
@@ -87,39 +87,50 @@ export function StringPart(props: {part: StringPart, setPart: (arg: StringPart) 
               ...props.part,
               target: arg,
             });
-          }} /><br />
-          <StringBuilder value={props.part.template} args={[...props.args, ...(props.part.target.variable !== null ? getForEachVariables(props.part, props.part.target.variable) : [])]} setValue={(builder) => {
-            if (props.part.type !== "each") return;
-            props.setPart({...props.part, template: builder});
           }} />
+          <div className="nested-block">
+            <StringBuilder value={props.part.template} args={[...props.args, ...(props.part.target.variable !== null ? getForEachVariables(props.part, props.part.target.variable) : [])]} setValue={(builder) => {
+              if (props.part.type !== "each") return;
+              props.setPart({...props.part, template: builder});
+            }} />
+          </div>
         </>
       )}
       { props.part.type === "if" && (
         <>
-          {lang.stringBuilder.if} <Condition condition={props.part.condition} args={props.args} setCondition={(condition) => {
-            if (props.part.type !== "if") return;
-            props.setPart({
-              ...props.part,
-              condition,
-            });
-          }} /><br />
-          {lang.stringBuilder.then} <StringBuilder value={props.part.then} args={props.args} setValue={(builder) => {
-            if (props.part.type !== "if") return;
-            props.setPart({
-              ...props.part,
-              then: builder,
-            });
-          }} /><br />
-          {lang.stringBuilder.else} <StringBuilder value={props.part.else} args={props.args} setValue={(builder) => {
-            if (props.part.type !== "if") return;
-            props.setPart({
-              ...props.part,
-              else: builder,
-            })
-          }} /><br />
+          <div className="nested-block nested-block--then">
+            <div className="nested-block__label">{lang.stringBuilder.if}</div>
+            <Condition condition={props.part.condition} args={props.args} setCondition={(condition) => {
+              if (props.part.type !== "if") return;
+              props.setPart({
+                ...props.part,
+                condition,
+              });
+            }} />
+          </div>
+          <div className="nested-block nested-block--then">
+            <div className="nested-block__label">{lang.stringBuilder.then}</div>
+            <StringBuilder value={props.part.then} args={props.args} setValue={(builder) => {
+              if (props.part.type !== "if") return;
+              props.setPart({
+                ...props.part,
+                then: builder,
+              });
+            }} />
+          </div>
+          <div className="nested-block nested-block--else">
+            <div className="nested-block__label">{lang.stringBuilder.else}</div>
+            <StringBuilder value={props.part.else} args={props.args} setValue={(builder) => {
+              if (props.part.type !== "if") return;
+              props.setPart({
+                ...props.part,
+                else: builder,
+              })
+            }} />
+          </div>
         </>
       )}
-      <button onClick={props.deletePart}>X</button>
+      <button className="btn btn--sm btn--danger" onClick={props.deletePart}>✕</button>
     </>
   )
 }

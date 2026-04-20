@@ -10,14 +10,16 @@ export function Topbar() {
   const lang = languageSetStore().getLanguageObject();
 
   return (
-    <div>
-      <button onClick={async() => alert(await compile())}>just compile</button>
-      <button onClick={async () => {
-        if (project.activeProject) {
-          await projects.updateCode(project.activeProject.id, await compile());
-          const trigger = useTriggerStore.getState().trigger;
-          await projects.updateDescription(project.activeProject.id, project.activeProject.title, trigger !== null ? triggerToStringExpression(trigger) : null, project.activeProject.isActive); project.setActiveProject(null)}}}>{lang.topbar.save_and_quit}</button>|
-      <span style={{border: "thick double #000000", margin: "0px 10px"}} onClick={() => {
+    <header className="topbar">
+      <div className="topbar__actions">
+        <button className="btn" onClick={async() => alert(await compile())}>just compile</button>
+        <button className="btn btn--primary" onClick={async () => {
+          if (project.activeProject) {
+            await projects.updateCode(project.activeProject.id, await compile());
+            const trigger = useTriggerStore.getState().trigger;
+            await projects.updateDescription(project.activeProject.id, project.activeProject.title, trigger !== null ? triggerToStringExpression(trigger) : null, project.activeProject.isActive); project.setActiveProject(null)}}}>{lang.topbar.save_and_quit}</button>
+      </div>
+      <span className="topbar__title" onClick={() => {
         const proj = project.activeProject;
         if (!proj) return;
         const newTitle = window.prompt(lang.projectSelector.change_name_prompt);
@@ -27,9 +29,13 @@ export function Topbar() {
           project.refreshProjects();
         }
       }}>{project.activeProject?.title}</span>
-      <button onClick={async () => {if (!project.activeProject) return; await projects.updateCode(project.activeProject.id, await compile()); useProjectsStore.getState().setIsSynced(true)}}>{lang.topbar.save}</button>
-      { project.isSynced ? <span style={{color: "green", marginLeft: "10px"}}>{lang.topbar.synced}</span> : <span style={{color: "red", marginLeft: "10px"}}>{lang.topbar.unsynced}</span>}
-      <hr />
-    </div>
+      <div className="topbar__right">
+        <button className="btn btn--primary" onClick={async () => {if (!project.activeProject) return; await projects.updateCode(project.activeProject.id, await compile()); useProjectsStore.getState().setIsSynced(true)}}>{lang.topbar.save}</button>
+        { project.isSynced
+          ? <span className="sync-badge sync-badge--synced">{lang.topbar.synced}</span>
+          : <span className="sync-badge sync-badge--unsynced">{lang.topbar.unsynced}</span>
+        }
+      </div>
+    </header>
   )
 }

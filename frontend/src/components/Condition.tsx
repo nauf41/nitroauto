@@ -113,7 +113,7 @@ export function Condition(props: {condition: TCondition, setCondition: (arg: TCo
   // ===
 
   return (
-    <>
+    <div className="condition-inline">
       <select value={getSelectionValue()} onChange={onConditionTypeChange}>
         <option value="true">{lang.conditionSelector.true}</option>
         <option value="false">{lang.conditionSelector.false}</option>
@@ -123,15 +123,15 @@ export function Condition(props: {condition: TCondition, setCondition: (arg: TCo
         <option value="compare">{lang.conditionSelector.compare}</option>
       </select>
       { (props.condition.type === "and" || props.condition.type === "or") && (
-        <>
-          <button onClick={conditionInsert(0)}>{lang.conditionSelector.add_front}</button>
+        <div className="condition-group">
+          <button className="btn btn--sm" onClick={conditionInsert(0)}>{lang.conditionSelector.add_front}</button>
           { props.condition.conditions.map((cond, idx) => (
-            <span key={idx}>
+            <div key={idx}>
               <Condition key={idx} condition={cond} setCondition={setCondition(idx)} deleteCondition={conditionDelete(idx)} args={props.args} />
-              <button onClick={conditionInsert(idx+1)}>{lang.conditionSelector.add_medium}</button>
-            </span>
+              <button className="btn btn--sm" onClick={conditionInsert(idx+1)}>{lang.conditionSelector.add_medium}</button>
+            </div>
           ))}
-        </>
+        </div>
       )}
       { props.condition.type === "not" && (
         <Condition condition={props.condition.condition} setCondition={setNotCondition} args={props.args} />
@@ -206,7 +206,7 @@ export function Condition(props: {condition: TCondition, setCondition: (arg: TCo
            )}
         </>
       ) }
-      {props.deleteCondition && <button onClick={props.deleteCondition}>{lang.conditionSelector.delete_this}</button>}
-    </>
+      {props.deleteCondition && <button className="btn btn--sm btn--danger" onClick={props.deleteCondition}>{lang.conditionSelector.delete_this}</button>}
+    </div>
   )
 }

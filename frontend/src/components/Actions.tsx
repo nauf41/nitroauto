@@ -191,7 +191,7 @@ export function SendWebhookAction(props: {action: Action, setAction: (arg: Actio
   }
 
   return (
-    <div className="trigger-row">
+    <div className="action-row">
       <label>{lang.sendWebhookAction.url}</label>
       <input type="text" value={props.action.target} onChange={setUrl} />
       <label>{lang.sendWebhookAction.message}</label>
@@ -212,7 +212,7 @@ export function GetSchedulesAction(props: {action: Action, setAction: (arg: Acti
 
   if (props.action.type !== "get-schedule") return <></>;
   return (
-    <div className="trigger-row">
+    <div className="action-row">
       <label>{lang.getSchedulesAction.calendar}</label>
       <select value={props.action.calendar_id} onChange={e => props.action.type === "get-schedule" && props.setAction({...props.action, calendar_id: e.target.value, calendar_name: calendars.find(cal => cal.id === e.target.value)?.name ?? ""})}>
         { calendars.map(cal => <option key={cal.id} value={cal.id} style={{color: cal.color}}>{cal.name}</option>)}

@@ -12,7 +12,7 @@ export function ProjectSelector() {
     <div className="project-selector">
       <div className="project-selector__header">
         <h1>nitroauto</h1>
-        <p>{lang.projectSelector.project_name}</p>
+        <p>Select a project to open or create a new one.</p>
       </div>
       <div className="project-table-container">
         <table className="project-table">

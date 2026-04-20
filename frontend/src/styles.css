@@ -432,6 +432,14 @@ select {
   gap: var(--space-3);
 }
 
+/* === Action form rows (send-webhook, get-schedule) === */
+.action-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
 .trigger-weekdays {
   display: flex;
   flex-wrap: wrap;

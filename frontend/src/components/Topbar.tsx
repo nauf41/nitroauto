@@ -12,7 +12,6 @@ export function Topbar() {
   return (
     <header className="topbar">
       <div className="topbar__actions">
-        <button className="btn" onClick={async() => alert(await compile())}>just compile</button>
         <button className="btn btn--primary" onClick={async () => {
           if (project.activeProject) {
             await projects.updateCode(project.activeProject.id, await compile());

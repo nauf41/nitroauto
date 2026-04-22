@@ -43,6 +43,7 @@ export function VariableSelector(props: {args: [Variable, string][], arg: TVaria
       { (props.arg.variable?.type.match(/^array<.*>$/) || props.arg.variable?.type.match(/^arraylength<.*>$/)) && (
         <>
           <input type="checkbox" checked={props.arg.filter!==null} onChange={onFilterActivatityChange} />
+          {lang.filter}
           { props.arg.filter !== null && (
             <>
               <Condition args={[...props.args, ...getForEachVariables(props.arg, props.arg.variable)]} condition={props.arg.filter} setCondition={(cond) => props.setArg({...props.arg, filter: cond})} />

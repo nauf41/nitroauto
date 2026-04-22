@@ -145,8 +145,9 @@ body {
 }
 
 .btn--sm {
-  padding: 3px var(--space-2);
+  padding: var(--space-2) var(--space-6);
   font-size: var(--text-xs);
+  text-align: center;
 }
 
 .btn--ghost {

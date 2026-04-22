@@ -110,4 +110,5 @@ export default {
     "nowTime": "defaultVariable.nowTime",
   },
   "formAnswer": (name: string) => `formAnswer("${name}")`,
+  "filter": "filter",
 }

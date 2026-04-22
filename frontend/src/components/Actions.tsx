@@ -26,33 +26,35 @@ export function Actions(props: {
           const varsForChildren = getVariablesForChildren(action);
           const nowArgs = [...props.args, ...aboveVars, ...varsForChildren];
           return (
-            <div key={index} className="action-block">
-              <div className="action-block__header">
-                <select value={action.type} onChange={(e) => props.editAction(index, newAction(e.target.value as ActionDraft["type"]))}>
-                  <option value="null">{lang.action.null}</option>
-                  <option value="if">{lang.action.if}</option>
-                  <option value="foreach">{lang.action.foreach}</option>
-                  <option value="send-webhook">{lang.action.send_webhook}</option>
-                  <option value="get-schedule">{lang.action.get_schedule}</option>
-                </select>
+            <>
+              <div key={index} className="action-block">
+                <div className="action-block__header">
+                  <select value={action.type} onChange={(e) => props.editAction(index, newAction(e.target.value as ActionDraft["type"]))}>
+                    <option value="null">{lang.action.null}</option>
+                    <option value="if">{lang.action.if}</option>
+                    <option value="foreach">{lang.action.foreach}</option>
+                    <option value="send-webhook">{lang.action.send_webhook}</option>
+                    <option value="get-schedule">{lang.action.get_schedule}</option>
+                  </select>
+                </div>
+                { action.type === "if" && (
+                  <IfAction action={action} setAction={(arg) => props.editAction(index, arg)} args={nowArgs} />
+                )}
+                { action.type === "foreach" && (
+                  <ForEachAction action={action} setAction={(arg) => props.editAction(index, arg)} args={nowArgs} />
+                )}
+                { action.type === "send-webhook" && (
+                  <SendWebhookAction action={action} setAction={(arg) => props.editAction(index, arg)} args={nowArgs} />
+                )}
+                { action.type === "get-schedule" && (
+                  <GetSchedulesAction action={action} setAction={(arg) => props.editAction(index, arg)} args={nowArgs} />
+                )}
+                <div className="action-block__footer">
+                  <button className="btn btn--sm btn--danger" onClick={() => props.deleteAction(index)}>{lang.action.delete_this}</button>
+                </div>
               </div>
-              { action.type === "if" && (
-                <IfAction action={action} setAction={(arg) => props.editAction(index, arg)} args={nowArgs} />
-              )}
-              { action.type === "foreach" && (
-                <ForEachAction action={action} setAction={(arg) => props.editAction(index, arg)} args={nowArgs} />
-              )}
-              { action.type === "send-webhook" && (
-                <SendWebhookAction action={action} setAction={(arg) => props.editAction(index, arg)} args={nowArgs} />
-              )}
-              { action.type === "get-schedule" && (
-                <GetSchedulesAction action={action} setAction={(arg) => props.editAction(index, arg)} args={nowArgs} />
-              )}
-              <div className="action-block__footer">
-                <button className="btn btn--sm btn--danger" onClick={() => props.deleteAction(index)}>{lang.action.delete_this}</button>
-                <button className="btn btn--sm" onClick={() => props.insertAction(index+1, newAction("null"))}>{lang.action.add_medium}</button>
-              </div>
-            </div>
+            <button className="btn btn--sm actions__add-btn" onClick={() => props.insertAction(index+1, newAction("null"))}>{lang.action.add_medium}</button>
+            </>
           )
         })
       }
@@ -193,7 +195,7 @@ export function SendWebhookAction(props: {action: Action, setAction: (arg: Actio
   return (
     <div className="action-row">
       <label>{lang.sendWebhookAction.url}</label>
-      <input type="text" value={props.action.target} onChange={setUrl} />
+      <input type="text" value={props.action.target} onChange={setUrl} size={50} />
       <label>{lang.sendWebhookAction.message}</label>
       <StringBuilder value={props.action.value} setValue={(value) => {
         if (props.action.type !== "send-webhook") return;

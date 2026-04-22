@@ -106,6 +106,9 @@ export default {
     "synced": "同期済み",
     "unsynced": "未同期",
   },
+  "network": {
+    "loading_popup": "読み込み中です。しばらくお待ちください",
+  },
   "defaultVariable": {
     "nowTime": "現在の時刻",
   },

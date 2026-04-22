@@ -106,6 +106,9 @@ export default {
     "synced": "topbar.synced",
     "unsynced": "topbar.unsynced",
   },
+  "network": {
+    "loading_popup": "network.loading_popup",
+  },
   "defaultVariable": {
     "nowTime": "defaultVariable.nowTime",
   },

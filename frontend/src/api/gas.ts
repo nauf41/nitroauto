@@ -1,6 +1,7 @@
 import type { ProjectStringExpression } from "../models/project";
 import type { TriggerStringExpression } from "../models/trigger";
 import { mockApi } from "../mock";
+import { useNetworkLoadingState } from "../states/network";
 
 const cache = new Map<string, GasResponse>();
 
@@ -9,23 +10,33 @@ function run(cachable: boolean, name: string, ...args: unknown[]): Promise<unkno
     return Promise.resolve(cache.get(JSON.stringify([name, args])));
   }
 
+  useNetworkLoadingState.getState().startRequest();
+  const finish = () => useNetworkLoadingState.getState().finishRequest();
+
   if (!import.meta.env.DEV) {
     return new Promise<unknown>((resolve: (value: unknown) => unknown, reject: (reason?: unknown) => unknown) => {
-      console.log(`Request: ${name}(${JSON.stringify(args)})`);
-      //@ts-expect-error google.script.run is automatically processed by GAS
-      google.script.run.withSuccessHandler((result: unknown) => {
-        if (cachable) {
-          cache.set(JSON.stringify([name, args]), {status: "success", value: result});
-        }
-        console.log(`SUCCESS RESPONSE: ${result}`);
-        resolve(result);
-      }).withFailureHandler((error: unknown) => {
-        if (cachable) {
-          cache.set(JSON.stringify([name, args]), {status: "failure", er: error});
-        }
-        console.error(`ERROR RESPONSE: ${error}`);
+      try {
+        console.log(`Request: ${name}(${JSON.stringify(args)})`);
+        //@ts-expect-error google.script.run is automatically processed by GAS
+        google.script.run.withSuccessHandler((result: unknown) => {
+          if (cachable) {
+            cache.set(JSON.stringify([name, args]), {status: "success", value: result});
+          }
+          console.log(`SUCCESS RESPONSE: ${result}`);
+          finish();
+          resolve(result);
+        }).withFailureHandler((error: unknown) => {
+          if (cachable) {
+            cache.set(JSON.stringify([name, args]), {status: "failure", er: error});
+          }
+          console.error(`ERROR RESPONSE: ${error}`);
+          finish();
+          reject(error);
+        })[name](...args);
+      } catch (error) {
+        finish();
         reject(error);
-      })[name](...args);
+      }
     });
   } else {
     return new Promise<unknown>((resolve: (value: unknown) => unknown, reject: (reason?: unknown) => unknown) => {
@@ -34,7 +45,7 @@ function run(cachable: boolean, name: string, ...args: unknown[]): Promise<unkno
       } catch (error) {
         reject(error);
       }
-    });
+    }).finally(finish);
   }
 }
 

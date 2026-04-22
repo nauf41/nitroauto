@@ -266,6 +266,28 @@ select {
   letter-spacing: 0.04em;
 }
 
+/* === Loading Popup === */
+.loading-popup {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(17, 24, 39, 0.28);
+  backdrop-filter: blur(2px);
+  z-index: 999;
+}
+
+.loading-popup__text {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-text-inverse);
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-dark));
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-6);
+  box-shadow: var(--shadow);
+}
+
 .sync-badge::before {
   content: '';
   display: inline-block;

@@ -75,7 +75,7 @@ export const projects = {
   updateCode: (id: number, code: string) => run(false, "updateProjectCode", id, code) as Promise<void>,
 
   // D
-  delete: (id: number) => run(false, "deleteProject", id) as Promise<void>,
+  delete: (id: number) => run(false, "deleteProjectById", id) as Promise<void>,
 
   isSynced: (id: number, code: string) => codeCache.get(id) === code,
 }

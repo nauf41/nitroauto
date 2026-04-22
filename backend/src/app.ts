@@ -76,7 +76,7 @@ function getProjects() {
 function createProject(title: string, trigger: string) {
   const lock = LockService.getScriptLock();
   lock.tryLock(0);
-  const projects = JSON.parse(PropertiesService.getScriptProperties().getProperty('projects')!);
+  const projects = JSON.parse(PropertiesService.getScriptProperties().getProperty('projects') ?? '[]');
   const id = Number(PropertiesService.getScriptProperties().getProperty('projectIdCounter'));
 
   projects.push({

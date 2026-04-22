@@ -35,7 +35,10 @@ export function ProjectSelector() {
                   project.refreshProjects();
                 }}>{proj.title}</td>
                 <td><input type="checkbox" checked={proj.isActive} onChange={(e) => project.updateProject(proj.id, proj.title, proj.trigger, e.target.checked)} /></td>
-                <td><button className="btn btn--sm" onClick={async () => {console.log("a"); project.setActiveProject(proj); console.log("b"); await decompile(await projects.get(proj.id)); console.log("c"); useProjectsStore.getState().setIsSynced(true); console.log("d");}}>{lang.projectSelector.open}</button></td>
+                <td>
+                  <button className="btn btn--sm" onClick={async () => {project.setActiveProject(proj); await decompile(await projects.get(proj.id)); useProjectsStore.getState().setIsSynced(true);}}>{lang.projectSelector.open}</button>
+                  <button className="btn btn--sm" onClick={async () => {await project.deleteProject(proj.id); await project.refreshProjects();}}>削除</button>
+                </td>
               </tr>
             ))}
           </tbody>

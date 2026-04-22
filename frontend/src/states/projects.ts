@@ -11,6 +11,7 @@ export interface Projects {
   setActiveProject: (project: Project | null) => void;
   refreshProjects: () => void;
   updateProject: (id: number, title: string, trigger: Trigger, isActive: boolean) => Promise<void>;
+  deleteProject: (id: number) => Promise<void>;
   setIsSynced: (synced: boolean) => void;
 }
 
@@ -35,6 +36,9 @@ export const useProjectsStore = create<Projects>()(devtools((set) => ({
         return { projects: updatedProjects };
       });
     });
+  },
+  deleteProject: (id: number) => {
+    return projects.delete(id);
   },
   setIsSynced: (synced: boolean) => {console.log("setIsSynced to " + synced); set(() => ({ isSynced: synced }))},
 })));

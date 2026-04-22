@@ -21,24 +21,26 @@ export function StringBuilder(props: {value: StringBuilder, setValue: (arg: Stri
     <div className="string-builder">
       <button className="btn btn--sm" onClick={insertPart(0)}>{lang.stringBuilder.insert_head}</button>
       {props.value.parts.map((part, index) => (
-        <div key={index} className="string-part">
-          <StringPart args={props.args} part={part} setPart={(newPart) => {
-            const ar = [...props.value.parts];
-            ar[index] = newPart;
-            props.setValue({
-              ...props.value,
-              parts: ar,
-            });
-          }} deletePart={() => {
-            const ar = [...props.value.parts];
-            ar.splice(index, 1);
-            props.setValue({
-              ...props.value,
-              parts: ar,
-            });
-          }} />
+        <>
+          <div key={index} className="string-part">
+            <StringPart args={props.args} part={part} setPart={(newPart) => {
+              const ar = [...props.value.parts];
+              ar[index] = newPart;
+              props.setValue({
+                ...props.value,
+                parts: ar,
+              });
+            }} deletePart={() => {
+              const ar = [...props.value.parts];
+              ar.splice(index, 1);
+              props.setValue({
+                ...props.value,
+                parts: ar,
+              });
+            }} />
+          </div>
           <button className="btn btn--sm" onClick={insertPart(index+1)}>{lang.stringBuilder.insert_medium}</button>
-        </div>
+        </>
       ))}
     </div>
   )
@@ -54,6 +56,7 @@ export function StringPart(props: {part: StringPart, setPart: (arg: StringPart) 
 
   return (
     <>
+      <button className="btn btn--sm btn--danger" onClick={props.deletePart}>✕</button>
       <select value={props.part.type} onChange={changeType}>
         <option value="static">{lang.stringBuilder.static}</option>
         <option value="variable">{lang.stringBuilder.variable}</option>
@@ -130,7 +133,6 @@ export function StringPart(props: {part: StringPart, setPart: (arg: StringPart) 
           </div>
         </>
       )}
-      <button className="btn btn--sm btn--danger" onClick={props.deletePart}>✕</button>
     </>
   )
 }

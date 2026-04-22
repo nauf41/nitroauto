@@ -110,4 +110,5 @@ export default {
     "nowTime": "現在の時刻",
   },
   "formAnswer": (name: string) => `フォームの回答: ${name}`,
+  "filter": "フィルタ",
 }

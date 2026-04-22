@@ -106,6 +106,9 @@ export default {
     "synced": "Synced",
     "unsynced": "Unsynced",
   },
+  "network": {
+    "loading_popup": "Loading... please wait",
+  },
   "defaultVariable": {
     "nowTime": "Current time",
   },

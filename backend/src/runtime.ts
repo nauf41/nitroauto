@@ -61,7 +61,7 @@ export function prepare_next_trigger(e: GoogleAppsScript.Events.TimeDriven | Goo
 }
 
 export function trigger_timed(e: GoogleAppsScript.Events.TimeDriven) {
-  //try {
+  try {
     const tim = new Date();
 
     const triggers = JSON.parse(PropertiesService.getScriptProperties().getProperty('triggers')!) as TriggerStoreStructure[];
@@ -69,15 +69,13 @@ export function trigger_timed(e: GoogleAppsScript.Events.TimeDriven) {
     const code = PropertiesService.getScriptProperties().getProperty(`project_${project_id}`)!;
 
     runner(tim, [], code);
-  //} catch (e) {
-  //  Logger.log(`Error in trigger_timed: ${e}`);
-  //} finally {
+  } finally {
     prepare_next_trigger(e);
-  //}
+  }
 }
 
 export function trigger_onFormSubmit(e: GoogleAppsScript.Events.FormsOnFormSubmit) {
-  //try {
+  try {
     const tim = new Date();
 
     const trig_vars: TypedValue[] = e.response.getItemResponses().map(itemResponse => ["string", itemResponse.getResponse().toString()]);
@@ -88,11 +86,9 @@ export function trigger_onFormSubmit(e: GoogleAppsScript.Events.FormsOnFormSubmi
         .getProperty(`project_${projectId}`)!;
 
     runner(tim, trig_vars, code);
-  //} catch (e) {
-  //  Logger.log(`Error in trigger_onFormSubmit: ${e}`);
-  //} finally {
+  } finally {
     prepare_next_trigger(e);
-  //}
+  }
 }
 
 export function runner(tim: Date, trig_vars: TypedValue[], code: JsonStringified<CodeStore | []>) {
